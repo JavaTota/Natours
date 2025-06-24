@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
@@ -15,6 +16,11 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, 'Please enter a valid email'],
   },
   photo: String,
+  role: {
+    type: String,
+    enum: ['user', 'guide', 'lead-guide', 'admin'],
+    default: 'user',
+  },
   password: {
     type: String,
     required: [true, 'Please provide a password'],
@@ -32,6 +38,19 @@ const userSchema = new mongoose.Schema({
       message: 'Passwords must be equal',
     },
   },
+  passwordChangedAt: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
+});
+
+//MIDDLEWARE TO CHECK IF THE PASSWORD HAS BEEN MODIFIED(IF YES SET THE VALUE)
+
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
+  this.passwordChangedAt = Date.now() - 1000;
+
+  next();
 });
 
 //MIDDLEWARE TO HASH THE PASSWORD ON SAVE TO DATABASE
@@ -54,6 +73,37 @@ userSchema.methods.correctPassword = async function (
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimeStamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10,
+    );
+
+    return JWTTimestamp < changedTimeStamp;
+  }
+
+  return false;
+};
+
+userSchema.methods.createPasswordResetToken = function () {
+  //1) CREATE THE TOKEN
+  const resetToken = crypto.randomBytes(32).toString('hex');
+
+  //2) STORE THE ENCRYPTED TOKEN
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  console.log({ resetToken }, this.passwordResetToken);
+
+  //3) SET EXPIRATION TO 10 MIN LATER
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+  //4) RETURN THE TOKEN SO THEN WE CAN SEND IT VIA EMAIL
+  return resetToken;
+};
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
