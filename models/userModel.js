@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please confirm your password'],
     validate: {
-      //THIS. KEYWORD ONLY WORKS ON ONLY ON SAVE AND CREATE
+      //THIS. KEYWORD ONLY WORKS ON SAVE AND CREATE
       validator: function (el) {
         return el === this.password;
       },
@@ -41,6 +41,11 @@ const userSchema = new mongoose.Schema({
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
 });
 
 //MIDDLEWARE TO CHECK IF THE PASSWORD HAS BEEN MODIFIED(IF YES SET THE VALUE)
@@ -50,6 +55,13 @@ userSchema.pre('save', function (next) {
 
   this.passwordChangedAt = Date.now() - 1000;
 
+  next();
+});
+
+//MIDDELWARE TO HIDE THE INACTIVE USERS
+
+userSchema.pre(/^find/, function (next) {
+  this.find({ active: { $ne: false } });
   next();
 });
 
