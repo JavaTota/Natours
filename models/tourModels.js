@@ -146,13 +146,16 @@ tourSchema.pre('save', function (next) {
 
 //QUERY MIDDLEWARE
 
+//MIDDLEWARE TO POPULATE THE GUIDES FIELD
 tourSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'guides',
     select: '-__v -passwordChangedAt',
   });
+  next();
 });
 
+//MIDDLEWARE TO HIDE THE SECRET TOURs
 tourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } });
   this.start = Date.now();
