@@ -11,7 +11,10 @@ const {
 
 const { protect, restrictTo } = require('../controllers/authController');
 
-router.route('/').get(protect, getAllReviews).post(protect, postNewReview);
+router
+  .route('/')
+  .get(protect, getAllReviews)
+  .post(protect, restrictTo, postNewReview);
 
 router
   .route('/:id')
