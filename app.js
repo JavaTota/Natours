@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-//LIMITER FOR REQUESTS FROM SAME IP(preventing brute force attacks)
+//LIMITER FOR REQUESTS FROM SAME IP(preventing brute force attacks)s
 const limiter = rateLimit({
   max: 100,
   windowM: 60 * 60 * 1000,
