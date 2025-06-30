@@ -3,6 +3,8 @@ const APIFeatures = require('../utils/apifeatures');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
+const factory = require('./handlerFactory');
+
 //MIDDLEWARE FOR ROUTE TOP TOURS(ALIASING)
 exports.aliasTopTour = (req, res, next) => {
   req.query.limit = '5';
@@ -45,44 +47,11 @@ exports.getTourById = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.postNewTour = catchAsync(async (req, res, next) => {
-  const newTour = await Tour.create(req.body);
+exports.postNewTour = factory.createOne(Tour);
 
-  res.status(201).json({
-    status: 'success',
-    data: {
-      tours: newTour,
-    },
-  });
-});
+exports.updateTourById = factory.updateOne(Tour);
 
-exports.updateTourById = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!tour) {
-    return next(new AppError('No tour found with that id', 404));
-  }
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour,
-    },
-  });
-});
-
-exports.deleteTourById = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndRemove(req.params.id);
-
-  if (!tour) {
-    return next(new AppError('No tour found with that id', 404));
-  }
-  res.status(204).json({
-    status: 'success',
-  });
-});
+exports.deleteTourById = factory.deleteOne(Tour);
 
 //AGGREGATION PIPELINES
 

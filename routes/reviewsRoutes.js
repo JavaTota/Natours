@@ -1,24 +1,27 @@
 const express = require('express');
+const { protect, restrictTo } = require('../controllers/authController');
 
-const router = express.Router();
+//TO MAKE THE USE OF TOURID PARAM POSSIBLE
+const router = express.Router({ mergeParams: true });
 
 const {
   getAllReviews,
   getReviewById,
   postNewReview,
   deleteReviewById,
+  updateReviewById,
+  setTourUserIds,
 } = require('../controllers/reviewsController');
-
-const { protect, restrictTo } = require('../controllers/authController');
 
 router
   .route('/')
-  .get(protect, getAllReviews)
-  .post(protect, restrictTo, postNewReview);
+  .get(getAllReviews)
+  .post(protect, restrictTo('user'), setTourUserIds, postNewReview);
 
 router
   .route('/:id')
   .get(protect, getReviewById)
+  .patch(protect, restrictTo('user'), updateReviewById)
   .delete(protect, restrictTo('admin', 'lead-guide'), deleteReviewById);
 
 module.exports = router;

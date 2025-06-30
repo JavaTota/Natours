@@ -9,19 +9,14 @@ const {
   getTourStats,
   getMonthlyPlan,
 } = require('../controllers/tourController');
-const {
-  getAllReviews,
-  getReviewById,
-  postNewReview,
-  deleteReviewById,
-} = require('../controllers/reviewsController');
+const reviewRouter = require('./reviewsRoutes');
 
 const router = express.Router();
 
 const { protect, restrictTo } = require('../controllers/authController');
 
-//PARAM MIDDLEWARE
-// router.param('id', checkId);
+//MOUNT THE REVIEW ROUTER FOR THIS URL
+router.use('/:tourId/reviews', reviewRouter);
 
 //ROUTES
 
@@ -36,9 +31,5 @@ router
   .get(getTourById)
   .patch(updateTourById)
   .delete(protect, restrictTo('admin', 'lead-guide'), deleteTourById);
-
-router
-  .route('/:tourId/reviews')
-  .post(protect, restrictTo('user'), postNewReview);
 
 module.exports = router;
