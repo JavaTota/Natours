@@ -38,6 +38,11 @@ exports.getReviewById = catchAsync(async (req, res, next) => {
 });
 
 exports.postNewReview = catchAsync(async (req, res, next) => {
+  //Allow nested routes
+
+  if (!req.body.tours) req.body.tours = req.params.tourId;
+  if (!req.body.user) req.body.user = req.user.id;
+
   const newReview = await Reviews.create(req.body);
 
   res.status(201).json({

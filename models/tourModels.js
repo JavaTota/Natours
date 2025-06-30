@@ -12,7 +12,7 @@ const tourSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       maxLength: [40, 'A tour must have lte 40 character'],
-      minLength: [10, 'A tour must have gte 40 character'],
+      minLength: [10, 'A tour must have gte 10 character'],
       // validate: [validator.isAlpha, 'A name can only contain characters'],
     },
     slug: String,
@@ -120,6 +120,13 @@ tourSchema.virtual('durationWeeks').get(function () {
 });
 // ===  ({durationWeeks: duration / 7})
 
+//VIRTUAL POPULATE
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tours',
+  localField: '_id',
+});
+
 //MIDDLEWARE TO CONNECT THE ID IN THE GUIDES ARRAY TO THEIR RESPECTIVE DOCUMENTS(embedding)
 // tourSchema.pre('save', async function (next) {
 //   const guidesPromises = this.guides.map(async (id) => await User.findById(id));
@@ -139,6 +146,7 @@ tourSchema.virtual('durationWeeks').get(function () {
 //   console.log(doc);
 //   next();
 // });
+
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
@@ -150,7 +158,7 @@ tourSchema.pre('save', function (next) {
 tourSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'guides',
-    select: '-__v -passwordChangedAt',
+    select: 'name email',
   });
   next();
 });
