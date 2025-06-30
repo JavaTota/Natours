@@ -18,23 +18,23 @@ const { protect, restrictTo } = require('../controllers/authController');
 //MOUNT THE REVIEW ROUTER FOR THIS URL
 router.use('/:tourId/reviews', reviewRouter);
 
-//ROUTES
+//PROTECT ALL ROUTES USING MIDDLEWARE
+router.use(protect);
 
+//ROUTES
 router.route('/top-5-cheap').get(aliasTopTour, getAllTours);
 router.route('/tour-stats').get(getTourStats);
-router
-  .route('/monthly-plan/:year')
-  .get(protect, restrictTo('admin', 'lead-guide', 'guide'), getMonthlyPlan);
 
-router
-  .route('/')
-  .get(getAllTours)
-  .post(protect, restrictTo('admin', 'lead-guide'), postNewTour);
+router.use(restrictTo('admin', 'lead-guide', 'guide'));
+
+router.route('/monthly-plan/:year').get(restrictTo('guide'), getMonthlyPlan);
+
+router.route('/').get(getAllTours).post(postNewTour);
 
 router
   .route('/:id')
   .get(getTourById)
-  .patch(protect, restrictTo('admin', 'lead-guide'), updateTourById)
-  .delete(protect, restrictTo('admin', 'lead-guide'), deleteTourById);
+  .patch(updateTourById)
+  .delete(deleteTourById);
 
 module.exports = router;
