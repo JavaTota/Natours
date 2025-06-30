@@ -48,6 +48,10 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
 exports.getAllUsers = factory.getAll(User);
 exports.getUserById = factory.getOne(User);
 exports.updateUserById = factory.updateOne(User);
