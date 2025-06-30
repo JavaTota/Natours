@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema(
   {
@@ -71,38 +71,38 @@ userSchema.pre(/^find/, function (next) {
   next();
 });
 
-//MIDDLEWARE TO HASH THE PASSWORD ON SAVE TO DATABASE
-userSchema.pre('save', async function (next) {
-  //RUN IF PASSWORD IS MODIFIED
-  if (!this.isModified('password')) return next();
+// //MIDDLEWARE TO HASH THE PASSWORD ON SAVE TO DATABASE
+// userSchema.pre('save', async function (next) {
+//   //RUN IF PASSWORD IS MODIFIED
+//   if (!this.isModified('password')) return next();
 
-  this.password = await bcrypt.hash(this.password, 12);
+//   this.password = await bcrypt.hash(this.password, 12);
 
-  this.passwordConfirm = undefined;
+//   this.passwordConfirm = undefined;
 
-  next();
-});
+//   next();
+// });
 
-//COMPARISON OF HASHED PASSWORD TO TO JUST SAVED ENCRYPTED PASSWORD FOR USER LOGIN
-userSchema.methods.correctPassword = async function (
-  candidatePassword,
-  userPassword,
-) {
-  return await bcrypt.compare(candidatePassword, userPassword);
-};
+// //COMPARISON OF HASHED PASSWORD TO TO JUST SAVED ENCRYPTED PASSWORD FOR USER LOGIN
+// userSchema.methods.correctPassword = async function (
+//   candidatePassword,
+//   userPassword,
+// ) {
+//   return await bcrypt.compare(candidatePassword, userPassword);
+// };
 
-userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
-  if (this.passwordChangedAt) {
-    const changedTimeStamp = parseInt(
-      this.passwordChangedAt.getTime() / 1000,
-      10,
-    );
+// userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+//   if (this.passwordChangedAt) {
+//     const changedTimeStamp = parseInt(
+//       this.passwordChangedAt.getTime() / 1000,
+//       10,
+//     );
 
-    return JWTTimestamp < changedTimeStamp;
-  }
+//     return JWTTimestamp < changedTimeStamp;
+//   }
 
-  return false;
-};
+//   return false;
+// };
 
 userSchema.methods.createPasswordResetToken = function () {
   //1) CREATE THE TOKEN
