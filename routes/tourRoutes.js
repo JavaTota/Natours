@@ -27,13 +27,14 @@ router
 router.route('/distances/:latlng/unit/:unit').get(getDistances);
 
 //PROTECT ALL ROUTES USING MIDDLEWARE
+
+router.route('/').get(getAllTours).post(protect, postNewTour);
+
 router.use(protect);
 
 //ROUTES
 router.route('/top-5-cheap').get(aliasTopTour, getAllTours);
 router.route('/tour-stats').get(getTourStats);
-
-router.route('/').get(getAllTours).post(postNewTour);
 
 router
   .route('/:id')

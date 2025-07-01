@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -14,7 +15,16 @@ const reviewsRouter = require('./routes/reviewsRoutes');
 
 const app = express();
 
+//CLIENT SIDE TEMPLATE
+app.set('view engine', 'pug');
+
+//finding the path to the VIEWS folder
+app.set('views', path.join(__dirname, 'views'));
+
 // GLOBAL MIDDLEWARES
+
+//SERVING STATIC FILES
+app.use(express.static(path.join(__dirname, 'public')));
 
 //SET SECURITY HTTP HEADERS
 app.use(helmet());
@@ -62,9 +72,6 @@ app.use(
   }),
 );
 
-//SERVING STATIC FILES
-app.use(express.static(`${__dirname}/public`));
-
 //TEST MIDDLEWARE
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
@@ -72,6 +79,11 @@ app.use((req, res, next) => {
 });
 
 //ROUTES
+app.get('/', (req, res) => {
+  //RENDERING THE BASE.PUG FILE IN THE VIEW FOLDER
+  res.status(200).render('base');
+});
+
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewsRouter);
