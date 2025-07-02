@@ -9,6 +9,7 @@ const hpp = require('hpp');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
+const viewRouter = require('./routes/viewRoutes');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewsRouter = require('./routes/reviewsRoutes');
@@ -79,11 +80,8 @@ app.use((req, res, next) => {
 });
 
 //ROUTES
-app.get('/', (req, res) => {
-  //RENDERING THE BASE.PUG FILE IN THE VIEW FOLDER
-  res.status(200).render('base');
-});
 
+app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewsRouter);
