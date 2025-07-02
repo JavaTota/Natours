@@ -16,9 +16,10 @@ exports.getTour = catchAsync(async (req, res) => {
 
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({
     path: 'reviews',
-    fields: 'review rating user',
+    fields: 'review rating user guides',
   });
 
+  console.log(tour);
   //2)BUILD THE TEMPLATE
 
   //3)RENDER TEMPLATE USING DATA FROM 1)
