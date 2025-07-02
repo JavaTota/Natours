@@ -163,7 +163,10 @@ tourSchema.pre('save', function (next) {
 
 //MIDDLEWARE TO POPULATE THE GUIDES FIELD
 tourSchema.pre(/^find/, function (next) {
-  this.populate('guides');
+  this.populate({
+    path: 'guides',
+    select: 'name email',
+  });
   next();
 });
 

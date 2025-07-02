@@ -19,7 +19,6 @@ exports.getTour = catchAsync(async (req, res) => {
     fields: 'review rating user guides',
   });
 
-  console.log(tour);
   //2)BUILD THE TEMPLATE
 
   //3)RENDER TEMPLATE USING DATA FROM 1)

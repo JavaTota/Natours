@@ -68,7 +68,7 @@ exports.getAll = (Model) =>
     //to allow for nested routes
     let filter = {};
 
-    if (req.params.tourId) filter = { tours: req.params.tourId };
+    if (req.params.tourId) filter = { tour: req.params.tourId };
     //EXECUTE QUERY
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
