@@ -10,6 +10,7 @@ mapboxgl.accessToken =
 const map = new mapboxgl.Map({
   container: 'map', // container ID
   style: 'mapbox://styles/mapbox/light-v10', // style URL
+  scrollZoom: false,
   //   center: [-118.113491, 34.111745],
   //   zoom: 5,
   //   interactive: false,
