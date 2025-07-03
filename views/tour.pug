@@ -1,6 +1,9 @@
 extends base
 include _reviewCard
 
+block append head
+    script(src='/js/mapbox.js')
+
 mixin overviewBox(label, text, icon)
     .overview-box__detail
         svg.overview-box__icon
@@ -12,7 +15,7 @@ block content
     section.section-header
         .header__hero
             .header__hero-overlay &nbsp;
-            img.header__hero-img(src=`/img/tours/${tour.imageCover}`, alt=`${tour.name}`)
+                img.header__hero-img(src=`/img/tours/${tour.imageCover}`, alt=`${tour.name}`)
 
         .heading-box
             h1.heading-primary
