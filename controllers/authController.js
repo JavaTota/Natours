@@ -82,6 +82,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
 
   if (!token) {
@@ -220,4 +222,33 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
   //4)LOG IN USER SEND TOKEN
   createSendToken(user, 200, res);
+});
+
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  //1) GET THE TOKEN AND CHECK IF EXISTS
+
+  if (req.cookies.jwt) {
+    //2) VERIFICATION TOKEN
+    const decoded = await promisify(jwt.verify)(
+      req.cookies.jwt,
+      process.env.JWT_SECRET,
+    );
+
+    //3) CHECK IF USER STILL EXIST
+    const currentUser = await User.findById(decoded.id);
+
+    if (!currentUser) {
+      return next();
+    }
+
+    //4) CHECK IF USER CHANGED PASSWORD AFTER TOKEN WAS ISSUED
+    if (currentUser.changedPasswordAfter(decoded.iat)) {
+      return next();
+    }
+
+    //THERE IS A LOGGED IN USER
+    res.locals.user = currentUser;
+    return next();
+  }
+  next();
 });
