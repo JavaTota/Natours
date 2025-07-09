@@ -221,7 +221,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
   //2)CHECK IF CURRENT PASSWORD IS CORRECT
 
-  if (!(await user.correctPassword(req.body.currentPassword, user.password)))
+  if (!(await user.correctPassword(req.body.passwordCurrent, user.password)))
     return next(new AppError('current password is incorrect', 401));
 
   //3) UPDATE PASSWORD

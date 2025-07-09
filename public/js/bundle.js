@@ -13324,7 +13324,7 @@ function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateData = void 0;
+exports.updateSettings = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -13340,34 +13340,32 @@ function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.
 
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 
-var updateData = exports.updateData =
+var updateSettings = exports.updateSettings =
 /*#__PURE__*/
 function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
-  _regenerator().m(function _callee(name, email) {
-    var res, _t;
+  _regenerator().m(function _callee(data, type) {
+    var url, res, _t;
 
     return _regenerator().w(function (_context) {
       while (1) switch (_context.n) {
         case 0:
           console.log(email, password);
           _context.p = 1;
+          url = type === 'password' ? 'http://127.0.0.1:3000/api/v1/users/updateMyPassword' : 'http://127.0.0.1:3000/api/v1/users/updateMe';
           _context.n = 2;
           return (0, _axios.default)({
             method: 'PATCH',
-            url: 'http://127.0.0.1:3000/api/v1/users/updateMe',
-            data: {
-              name: name,
-              email: email
-            }
+            url: url,
+            data: data
           });
 
         case 2:
           res = _context.v;
 
           if (res.data.status === 'success') {
-            (0, _alert.showAlert)('success', 'Account successfully updated');
+            (0, _alert.showAlert)('success', "".concat(type.toUpperCase(), " successfully updated"));
           }
 
           console.log(res);
@@ -13385,7 +13383,7 @@ function () {
     }, _callee, null, [[1, 3]]);
   }));
 
-  return function updateData(_x, _x2) {
+  return function updateSettings(_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -13650,9 +13648,18 @@ var _login = require("./login");
 
 var _updateSettings = require("./updateSettings");
 
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i.return) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine(u), _regeneratorDefine(u, o, "Generator"), _regeneratorDefine(u, n, function () { return this; }), _regeneratorDefine(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+
+function _regeneratorDefine(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine = function (_regeneratorDefine2) { function _regeneratorDefine(_x2, _x3, _x4, _x5) { return _regeneratorDefine2.apply(this, arguments); } _regeneratorDefine.toString = function () { return _regeneratorDefine2.toString(); }; return _regeneratorDefine; }(function (e, r, n, t) { if (r) i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n;else { var _o = function _o(r, n) { _regeneratorDefine(e, r, function (e) { return this._invoke(r, n, e); }); }; _o("next", 0), _o("throw", 1), _o("return", 2); } }), _regeneratorDefine(e, r, n, t); }
+
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
+
 var mapBox = document.getElementById('map');
 var loginForm = document.querySelector('.form--login');
 var userForm = document.querySelector('.form-user-data');
+var passwordForm = document.querySelector('.form-user-password');
 var logoutButton = document.querySelector('.nav__el--logout');
 
 if (mapBox) {
@@ -13675,8 +13682,52 @@ if (userForm) {
     var name = document.getElementById('name').value;
     var email = document.getElementById('email').value;
     e.preventDefault();
-    (0, _updateSettings.updateData)(name, email);
+    (0, _updateSettings.updateSettings)({
+      name: name,
+      email: email
+    }, 'data');
   });
+}
+
+if (passwordForm) {
+  passwordForm.addEventListener('submit',
+  /*#__PURE__*/
+  function () {
+    var _ref = _asyncToGenerator(
+    /*#__PURE__*/
+    _regenerator().m(function _callee(e) {
+      var passwordCurrent, password, passwordConfirm;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.n) {
+          case 0:
+            e.preventDefault();
+            document.querySelector('.btn--save--password').innerHTML = 'Updating...';
+            passwordCurrent = document.getElementById('password-current').value;
+            password = document.getElementById('password').value;
+            passwordConfirm = document.getElementById('password-confirm').value;
+            _context.n = 1;
+            return (0, _updateSettings.updateSettings)({
+              passwordCurrent: passwordCurrent,
+              password: password,
+              passwordConfirm: passwordConfirm
+            }, 'password');
+
+          case 1:
+            document.getElementById('password-current').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('password-confirm').value = '';
+            document.querySelector('.btn--save--password').innerHTML = 'Save Password';
+
+          case 2:
+            return _context.a(2);
+        }
+      }, _callee);
+    }));
+
+    return function (_x) {
+      return _ref.apply(this, arguments);
+    };
+  }());
 }
 
 if (logoutButton) logoutButton.addEventListener('click', _login.logout);

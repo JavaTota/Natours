@@ -33,7 +33,7 @@ router.patch('/resetPassword/:token', resetPassword);
 //PROTECT ALL ROUTES USING MIDDLEWARE
 router.use(protect);
 
-router.patch('/updatePassword', updatePassword);
+router.patch('/updateMyPassword', updatePassword);
 
 router.get('/me', getMe, getUserById);
 router.patch('/updateMe', updateMe);
