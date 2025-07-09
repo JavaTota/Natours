@@ -10,6 +10,7 @@ const {
   getMe,
   createOneUser,
   uploadUserPhoto,
+  resizeUserPhoto,
 } = require('../controllers/userController');
 
 const {
@@ -28,6 +29,7 @@ const router = express.Router();
 router.post('/signup', signUp);
 router.post('/login', login);
 router.get('/logout', logout);
+
 router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', resetPassword);
 
@@ -35,9 +37,8 @@ router.patch('/resetPassword/:token', resetPassword);
 router.use(protect);
 
 router.patch('/updateMyPassword', updatePassword);
-
 router.get('/me', getMe, getUserById);
-router.patch('/updateMe', uploadUserPhoto, updateMe);
+router.patch('/updateMe', uploadUserPhoto, resizeUserPhoto, updateMe);
 router.delete('/deleteMe', deleteMe);
 
 //RESTRICT TO ADMIN

@@ -13299,7 +13299,7 @@ function () {
 
         case 1:
           res = _context2.v;
-          if (res.data.status === 'success') location.reload(true);
+          if (res.data.status === 'success') location.assign('/login');
           _context2.n = 3;
           break;
 
