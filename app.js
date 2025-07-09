@@ -53,6 +53,7 @@ app.use(
     limit: '10kb',
   }),
 );
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
 //DATA SANITIZATION AGAINST noSQL DATA INJECTION
@@ -88,15 +89,8 @@ app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewsRouter);
 app.all('*', (req, res, next) => {
-  // const err = new Error(`Cant find ${req.originalUrl} on this server`);
-  // err.status = 'fail';
-  // err.statusCode = 404;
-
-  // next(err);
-
   next(new AppError(`Cant find ${req.originalUrl} on this server`, 404));
 });
 
 app.use(globalErrorHandler);
-
 module.exports = app;
