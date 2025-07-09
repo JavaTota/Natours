@@ -9,6 +9,7 @@ const {
   deleteMe,
   getMe,
   createOneUser,
+  uploadUserPhoto,
 } = require('../controllers/userController');
 
 const {
@@ -36,7 +37,7 @@ router.use(protect);
 router.patch('/updateMyPassword', updatePassword);
 
 router.get('/me', getMe, getUserById);
-router.patch('/updateMe', updateMe);
+router.patch('/updateMe', uploadUserPhoto, updateMe);
 router.delete('/deleteMe', deleteMe);
 
 //RESTRICT TO ADMIN
