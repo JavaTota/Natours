@@ -17,9 +17,8 @@ export const updateSettings = async (data, type) => {
 
     if (res.data.status === 'success') {
       showAlert('success', `${type.toUpperCase()} successfully updated`);
+      location.reload(true);
     }
-
-    console.log(res);
   } catch (error) {
     showAlert('error', error.response.data.message);
   }
