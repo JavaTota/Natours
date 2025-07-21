@@ -54,7 +54,6 @@ exports.signUp = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
 
   const url = `${req.protocol}://${req.get('host')}/me`;
-  console.log(url);
 
   await new Email(newUser, url).sendWelcome();
 
@@ -85,8 +84,6 @@ exports.logout = (req, res) => {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
   });
-
-  console.log(res.jwt);
 
   res.status(200).json({ status: 'success' });
 };
