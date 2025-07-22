@@ -19,6 +19,8 @@ const bookingRouter = require('./routes/bookingRoutes');
 
 const app = express();
 
+app.enable('trust proxy');
+
 //CLIENT SIDE TEMPLATE
 app.set('view engine', 'pug');
 
